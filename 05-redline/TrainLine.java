@@ -105,29 +105,43 @@ public class TrainLine {
             //Commence safe operations
             if (position == 1) {
                 //remove head
+                removedStation = this.head;
                 this.head = this.head.getNext();
             } else {
                 //Find the station prior to the one being removed
+                TrainStation cursor = this.head;
+                for (int i = 1; i < position - 1; i++) {
+                    cursor = cursor.getNext();
+                }
+                //cursor should be at the prior station
+                if (cursor.getNext() == this.tail) { // pointing to the same object so it is ok to use == between objects
+                    this.tail = cursor;
+                }
+                removedStation = cursor.getNext();
+                cursor.setNext(cursor.getNext().getNext());
             }
+            this.numberOfStations--; // always decreasing numberOfStations no matter what is being removed
+            removedStation.setNext(null); // always setting the next station to null
         }
-        return removedStation
+        return removedStation;
     }
 
 
 
-
     public String reverseList() {
-        String formerHead = this.head;
-        this.head = this.head.getNext();
-
+        String reversedTrainLine = "";
+        for (int i = this.numberOfStations; i >= 1; i--) {
+            TrainStation removedStation = this.remove(i);
+            reversedTrainLine += removedStation.getName() + "\n";
+            this.add(removedStation.getName());
+        }
+        return reversedTrainLine;
     }
 
 
 
     public boolean isEmpty() {
-        boolean found = false;
-        if (this.head == null)
-            return true;
+        return this.head == null;
     }
 
 

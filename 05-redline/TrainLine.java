@@ -9,6 +9,8 @@ public class TrainLine {
     /** Keeps a running tally of train stations in the trainline */
     private int numberOfStations;
 
+
+
     /** Full constructor */
     public TrainLine(String name, TrainStation head) {
         this.name = name;
@@ -22,10 +24,14 @@ public class TrainLine {
         this.tail = null;
     } // full constructor
 
+
+
     /** Basic constructor */
     public TrainLine(String name) {
         this(name, null);
     } // basic constructor
+
+
 
     /**
      * Creates a new station with the given name and adds it to the end of the line.
@@ -48,26 +54,82 @@ public class TrainLine {
         this.numberOfStations++;
     } // method add
 
+
+
     /** Returns the number of stations in the line >= 0 */
     public int getNumberOfStations() {
         return numberOfStations;
     } // method getNumberOfStations
+
+
 
     /*
      * METHOD STUBS TO ENSURE CODE COMPILES. YOU WILL HAVE TO REWRITE THIS CODE TO
      * MATCH THE SPECIFICATIONS AND ALSO YOU'LL HAVE TO WRITE METHOD isEmpty.
      */
     public boolean contains(String name) {
-        return false;
+        boolean found = false;
+        if (this.head != null) {
+            TrainStation cursor = this.head;
+            while (cursor.hasNext()) {
+                if (cursor.getName().equalsIgnoreCase(name)) {
+                    return true;
+                }
+                cursor = cursor.getNext();
+            }
+        }
+        return found;
+    } // method contains
+
+
+
+    public int indexOf(String name) { 
+        if (this.head != null) {
+            TrainStation cursor = this.head;
+            int i = 0;
+            while (cursor.hasNext()) {
+                if (cursor.getName().equalsIgnoreCase(name)) {
+                    return i;
+                }
+                cursor = cursor.getNext();
+                i++;
+            }
+        }
+        return -1;
+    } // method indexOf
+
+
+    public TrainStation remove(int position) {
+        TrainStation removedStation = null;
+        if (position >= 1 && position <= this.numberOfStations) {
+            //Commence safe operations
+            if (position == 1) {
+                //remove head
+                this.head = this.head.getNext();
+            } else {
+                //Find the station prior to the one being removed
+            }
+        }
+        return removedStation
     }
 
-    public int indexOf(String name) {
-        return -10;
-    }
+
+
 
     public String reverseList() {
-        return "niart";
+        String formerHead = this.head;
+        this.head = this.head.getNext();
+
     }
+
+
+
+    public boolean isEmpty() {
+        boolean found = false;
+        if (this.head == null)
+            return true;
+    }
+
 
     /*******************************************************************************
      * DO NOT REMOVE TESTS FROM THE CODE BELOW. YOU MAY **ADD** YOUR OWN TESTS BUT *
@@ -86,9 +148,15 @@ public class TrainLine {
         prep_TrainLine brownLineSB = new prep_TrainLine("Brown Line SB");
         // A random station name
         String randomName = "Oak Park";
+
+
+
         // Guard tests
         redLineSB.indexOf(null);
         redLineSB.contains(null);
+
+
+
         // Test indexOf on existing values
         boolean indexOfTestExisting = true;
         for (int i = 0; i < stationNames.length; i++) {
@@ -98,6 +166,9 @@ public class TrainLine {
         boolean indexOfTestNotExisting = (redLineSB.indexOf(randomName) == -1);
         // Test indexOf on empty line
         boolean indexOfTestingEmpty = (brownLineSB.indexOf(stationNames[0]) == -1);
+
+
+
         // Test contains for existing stations
         boolean containsTestExisting = true;
         for (String station : stationNames) {
@@ -105,12 +176,18 @@ public class TrainLine {
         }
         // Test contains for non existing values
         boolean containsTestNonExisting = (!redLineSB.contains(randomName));
+
+
+        
         // Test reverse list
         String expectedReverseList = "";
         for (int i = stationNames.length - 1; i >= 0; i--) {
             expectedReverseList = expectedReverseList + stationNames[i] + "\n";
         }
         boolean reverseListTest = redLineSB.reverseList().equals(expectedReverseList);
+
+
+
         // Reporting strings
         final String PASS = "Pass";
         final String FAIL = "Fail";

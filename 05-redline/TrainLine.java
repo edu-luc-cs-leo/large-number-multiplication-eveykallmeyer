@@ -63,20 +63,14 @@ public class TrainLine {
 
 
 
-    /*
-     * METHOD STUBS TO ENSURE CODE COMPILES. YOU WILL HAVE TO REWRITE THIS CODE TO
-     * MATCH THE SPECIFICATIONS AND ALSO YOU'LL HAVE TO WRITE METHOD isEmpty.
-     */
     public boolean contains(String name) {
         boolean found = false;
-        if (this.head != null) {
-            TrainStation cursor = this.head;
-            while (cursor.hasNext()) {
-                if (cursor.getName().equalsIgnoreCase(name)) {
-                    return true;
-                }
-                cursor = cursor.getNext();
+        TrainStation cursor = this.head;
+        while (cursor.hasNext()) {
+            if (cursor.getName().equalsIgnoreCase(name)) {
+                return true;
             }
+            cursor = cursor.getNext();
         }
         return found;
     } // method contains
@@ -84,18 +78,17 @@ public class TrainLine {
 
 
     public int indexOf(String name) { 
-        if (this.head != null) {
-            TrainStation cursor = this.head;
-            int i = 0;
-            while (cursor.hasNext()) {
-                if (cursor.getName().equalsIgnoreCase(name)) {
-                    return i;
-                }
-                cursor = cursor.getNext();
-                i++;
+        int found = -1;
+        TrainStation cursor = this.head;
+        int i = 0;
+        while (cursor.hasNext()) {
+            if (cursor.getName().equalsIgnoreCase(name)) {
+                return i;
             }
+            cursor = cursor.getNext();
+            i++;
         }
-        return -1;
+        return found;
     } // method indexOf
 
 
@@ -159,7 +152,7 @@ public class TrainLine {
             redLineSB.add(station);
         }
         // An empty trainline
-        prep_TrainLine brownLineSB = new prep_TrainLine("Brown Line SB");
+        TrainLine brownLineSB = new TrainLine("Brown Line SB");
         // A random station name
         String randomName = "Oak Park";
 

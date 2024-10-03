@@ -155,15 +155,9 @@ public class TrainLine {
         TrainLine brownLineSB = new TrainLine("Brown Line SB");
         // A random station name
         String randomName = "Oak Park";
-
-
-
         // Guard tests
         redLineSB.indexOf(null);
         redLineSB.contains(null);
-
-
-
         // Test indexOf on existing values
         boolean indexOfTestExisting = true;
         for (int i = 0; i < stationNames.length; i++) {
@@ -173,9 +167,6 @@ public class TrainLine {
         boolean indexOfTestNotExisting = (redLineSB.indexOf(randomName) == -1);
         // Test indexOf on empty line
         boolean indexOfTestingEmpty = (brownLineSB.indexOf(stationNames[0]) == -1);
-
-
-
         // Test contains for existing stations
         boolean containsTestExisting = true;
         for (String station : stationNames) {
@@ -183,18 +174,12 @@ public class TrainLine {
         }
         // Test contains for non existing values
         boolean containsTestNonExisting = (!redLineSB.contains(randomName));
-
-
-        
         // Test reverse list
         String expectedReverseList = "";
         for (int i = stationNames.length - 1; i >= 0; i--) {
             expectedReverseList = expectedReverseList + stationNames[i] + "\n";
         }
         boolean reverseListTest = redLineSB.reverseList().equals(expectedReverseList);
-
-
-
         // Reporting strings
         final String PASS = "Pass";
         final String FAIL = "Fail";

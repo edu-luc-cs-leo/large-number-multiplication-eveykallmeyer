@@ -30,10 +30,10 @@ public class TrainLine {
 
     /** Formatting */
     private static final int MAX_CHAR_PER_LINE = 80;
-    private static final int CHAR_COUNT_IN_LINE = 0;
 
     private static final String HEADER = "         1         2         3         4         5         6         7         8";
     private static final String SUBHEADER = "12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+    private static final String SPACES = " ";
     private static final String CORNER_SYMBOL = "+";
     private static final String HORIZONTAL_LINK = "--";
     private static final String VERTICAL_BORDER = "|";
@@ -120,7 +120,7 @@ public class TrainLine {
         } else {
             //Traverse the cursor to the station before the specified position
             TrainStation cursor = this.head;
-            for (int i = 0; i < position - 1; i++) {
+            for (int i = 1; i < position; i++) {
                 cursor = cursor.getNext();
             }
             // Insert the new station to the specified position after the cursor
@@ -136,8 +136,6 @@ public class TrainLine {
     }
 
 
-    
-
     public String toString() {
         String result = "";
         TrainStation cursor = this.head;
@@ -149,7 +147,7 @@ public class TrainLine {
             String arrow = right ? RIGHT_ARROW : LEFT_ARROW;
             // Move to the next line if the total number of characters is more than 80
             if (CHAR_COUNT_IN_LINE + name.length() + arrow.length() > MAX_CHAR_PER_LINE) {
-                result = "\n";
+                result += CORNER_SYMBOL + "\n" + SPACES.repeat(CHAR_COUNT_IN_LINE) + VERTICAL_BORDER + "\n";
                 CHAR_COUNT_IN_LINE = 0;
                 right = !right;
             }
@@ -166,7 +164,7 @@ public class TrainLine {
             int lastArrowLength = right ? RIGHT_ARROW.length() : LEFT_ARROW.length();
             result = result.substring(0, result.length() - lastArrowLength);
         }
-        return result.toString();
+        return result;
     }
 
 
@@ -178,9 +176,12 @@ public class TrainLine {
 
 
     public static void main(String[] args) {
+
+        // Print header of the visualization
+        printHeader();
+
         // A few station names
-        String[] stationNames = { "Howard", "Jarvis", "Morse",
-                "Loyola", "Granville", "Thorndale" };
+        String[] stationNames = { "Howard", "Jarvis", "Morse", "Loyola", "Granville", "Thorndale" };
 
         // A populated trainline
         TrainLine redLineSB = new TrainLine("Red Line SB");
@@ -194,10 +195,26 @@ public class TrainLine {
         // A random station name
         String randomName = "Oak Park";
 
+        // Create a TrainLine to use for insert and toString methods
+        String[] RED_LINE_SB_NAMES = {
+            "Howard", "Jarvis", "Morse", "Loyola", "Granville",
+            "Thorndale", "Bryn Mawr", "Berwyn", "Argyle", "Lawrence",
+            "Wilson", "Sheridan", "Addison", "Belmont", "Fullerton",
+            "North/Clybourn", "Clark/Division", "Chicago", "Grand", "Lake",
+            "Monroe", "Jackson", "Harrison", "Roosevelt", "Cermak-Chinatown",
+            "Sox-35th", "47th", "Garfield", "63rd", "69th",
+            "79th", "87th", "95th/Dan Ryan"
+        };
+        TrainLine entireRedLineSB = new TrainLine( "Entire Red Line SB");
+        for (String station : stationNames) {
+            entireRedLineSB.add(station);
+        }
+
         // Test insert method
-        redLineSB.insert("Test_Inserted_Station", 3);
-        System.out.println("TrainLine after insert:");
-        System.out.println(redLineSB.toString());
-     
+        entireRedLineSB.insert("Test_Inserted_Station", 3);
+
+        // Test toString and PrintTrainLine methods
+        System.out.println(entireRedLineSB.toString());
+        
     } // method main
 } // class TrainLine

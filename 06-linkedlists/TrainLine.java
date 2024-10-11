@@ -27,6 +27,22 @@ public class TrainLine {
         this(name, null);
     } // basic constructor
 
+
+    /** Formatting */
+    private static final int MAX_CHAR_PER_LINE = 80;
+    private static final int CHAR_COUNT_IN_LINE = 0;
+
+    private static final String HEADER = "         1         2         3         4         5         6         7         8";
+    private static final String SUBHEADER = "12345678901234567890123456789012345678901234567890123456789012345678901234567890";
+    private static final String CORNER_SYMBOL = "+";
+    private static final String HORIZONTAL_LINK = "--";
+    private static final String VERTICAL_BORDER = "|";
+    private static final String RIGHT_POINTER = ">";
+    private static final String LEFT_POINTER = "<";
+    private static final String RIGHT_ARROW = HORIZONTAL_LINK + RIGHT_POINTER;
+    private static final String LEFT_ARROW = HORIZONTAL_LINK + LEFT_POINTER;
+
+
     /**
      * Creates a new station with the given name and adds it to the end of the line.
      */
@@ -48,10 +64,13 @@ public class TrainLine {
         this.numberOfStations++;
     } // method add
 
+
     /** Returns the number of stations in the line >= 0 */
     public int getNumberOfStations() {
         return numberOfStations;
     } // method getNumberOfStations
+
+
 
     public TrainStation remove(int position) {
         TrainStation removedStation = null;
@@ -80,18 +99,105 @@ public class TrainLine {
         return removedStation;
     }
 
+
+    /**
+     * Creates a new station with the given name and adds it to the end of the line.
+     */    
+    public void insert(String name, int position) {
+        if (position < 0 || position > this.numberOfStations) {
+            return;
+        }
+        // Create the station being inserted
+        TrainStation insertedStation = new TrainStation(name);
+        // Determine if the station is being inserted at the head, and if so, update it
+        if (position == 0) {
+            insertedStation.setNext(this.head);
+            this.head = insertedStation;
+            // Determine if the list was empty and set the tail
+            if (this.tail == null) {
+                this.tail = insertedStation;
+            }
+        } else {
+            //Traverse the cursor to the station before the specified position
+            TrainStation cursor = this.head;
+            for (int i = 0; i < position - 1; i++) {
+                cursor = cursor.getNext();
+            }
+            // Insert the new station to the specified position after the cursor
+            insertedStation.setNext(cursor.getNext());
+            cursor.setNext(insertedStation);
+            // Determine if the the station is being isnerted at the tail, and if so, update it
+            if (insertedStation.getNext() == null) {
+                this.tail = insertedStation;
+            }
+        }
+        // Update station count
+        this.numberOfStations++;
+    }
+
+
+    
+
+    public String toString() {
+        String result = "";
+        TrainStation cursor = this.head;
+        boolean right = true;
+        int CHAR_COUNT_IN_LINE = 0;
+        
+        while (cursor != null) {
+            String name = cursor.getName();
+            String arrow = right ? RIGHT_ARROW : LEFT_ARROW;
+            // Move to the next line if the total number of characters is more than 80
+            if (CHAR_COUNT_IN_LINE + name.length() + arrow.length() > MAX_CHAR_PER_LINE) {
+                result = "\n";
+                CHAR_COUNT_IN_LINE = 0;
+                right = !right;
+            }
+            if (right) {
+                result += name + arrow;
+            } else {
+                result = arrow + name + result;
+            }
+            CHAR_COUNT_IN_LINE += name.length() + arrow.length();
+            cursor = cursor.getNext();
+        }
+        // Remove last arrow
+        if (result.length() > 0) {
+            int lastArrowLength = right ? RIGHT_ARROW.length() : LEFT_ARROW.length();
+            result = result.substring(0, result.length() - lastArrowLength);
+        }
+        return result.toString();
+    }
+
+
+
+    public static void printHeader() {
+        System.out.println(HEADER);
+        System.out.println(SUBHEADER);
+    } // method printHeader
+
+
     public static void main(String[] args) {
         // A few station names
         String[] stationNames = { "Howard", "Jarvis", "Morse",
                 "Loyola", "Granville", "Thorndale" };
+
         // A populated trainline
         TrainLine redLineSB = new TrainLine("Red Line SB");
         for (String station : stationNames) {
             redLineSB.add(station);
         }
+
         // An empty trainline
-        prep_TrainLine brownLineSB = new prep_TrainLine("Brown Line SB");
+        TrainLine brownLineSB = new TrainLine("Brown Line SB");
+
         // A random station name
         String randomName = "Oak Park";
+
+        // Test insert method
+        redLineSB.insert("Test_Inserted_Station", 3);
+        System.out.println("TrainLine after insert:");
+        System.out.println(redLineSB.toString());
+     
     } // method main
 } // class TrainLine

@@ -26,24 +26,25 @@ public class FastQ {
     } // default constructor
 
     public boolean add(String string) {
-        if (this.used < this.size) {
-            this.array[this.back] = string;
-            this.back = (this.back + 1) % this.size;
-            this.used++;
-            return true;
+        boolean success = true;
+        if (this.used < this.size) { // checks if the size is less than the amount of elements in the array (if there is space in the queue)
+            this.array[this.back] = string; // new string is added to where the back pointer currently is
+            this.back = (this.back + 1) % this.size; // move the pointer to the next position
+            this.used++; // increase the number of elements in the array (used)
+            return success; // return if string is successfully added
         }
-        return false;
+        return false; // return if there is no room to add a new element (used /< size)
     } // method add
 
     public String remove() {
-        if (this.used > 0) {
-            String removed = this.array[this.front];
-            this.array[this.front] = null;
-            this.front = (this.front + 1) % this.size;
-            this.used--;
-            return removed;
+        if (this.used > 0) { // checks if the queue is empty
+            String removed = this.array[this.front]; // string is removed from the position that the front pointer is at
+            this.array[this.front] = null; // position of the removed string is set to null
+            this.front = (this.front + 1) % this.size; // moves the pointer to the next position
+            this.used--; // decrease the number of elements in the array (used)
+            return removed; // return removed string
         }
-        return null;
+        return null; // return if the queue is empty
     } // method remove
     
 } // class FastQ

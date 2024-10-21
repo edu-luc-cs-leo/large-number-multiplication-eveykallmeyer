@@ -26,10 +26,23 @@ public class FastQ {
     } // default constructor
 
     public boolean add(String string) {
+        if (this.used < this.size) {
+            this.array[this.back] = string;
+            this.back = (this.back + 1) % this.size;
+            this.used++;
+            return true;
+        }
         return false;
     } // method add
 
     public String remove() {
+        if (this.used > 0) {
+            String removed = this.array[this.front];
+            this.array[this.front] = null;
+            this.front = (this.front + 1) % this.size;
+            this.used--;
+            return removed;
+        }
         return null;
     } // method remove
     

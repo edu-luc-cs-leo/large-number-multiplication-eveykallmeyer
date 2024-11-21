@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-
-public class HuffmanEncoding {
+public class HuffmanEncodingWithHeap {
 
     private static final int ASCII8 = 256;
     private static final char LEFT = '0';
@@ -42,7 +40,7 @@ public class HuffmanEncoding {
             // Process only characters that appear in the string we want to compress. The
             // frequency count of these characters will be greater than 0.
             if (frequencies[asciiCode] > 0) {
-                HuffmanNode newNode = newHuffman((cast)asciiCode, frequencies[asciiCode]);
+                HuffmanNode newNode = new HuffmanNode((char) asciiCode, frequencies[asciiCode]);
                 //add new node to the forest
                 forest.insert(newNode);
             }
@@ -61,7 +59,7 @@ public class HuffmanEncoding {
      * @param forest MinHeap of HuffmanNodes with symbol and frequency data
      * @return a HuffmanNode which is the root of the Huffman tree
      */
-    public static HuffmanNode buildTree(ArrayList<HuffmanNode> forest) {
+    public static HuffmanNode buildTree(MinHeap<HuffmanNode> forest) {
         while (forest.size() > 1) {
             // Remove the two nodes with the least frequencies from the forest
             HuffmanNode t1 = forest.removeMin();
@@ -76,7 +74,7 @@ public class HuffmanEncoding {
             forest.insert(newNode);
         }
         // The only node remaining in the forest is the root of the Huffman tree
-        return forest.getMin;
+        return forest.getMin();
     } // method buildTree
 
     /**
@@ -161,7 +159,7 @@ public class HuffmanEncoding {
      */
     static void encode(String message) {
         int[] frequencies = countFrequency(message);
-        ArrayList<HuffmanNode> forest = buildForest(frequencies);
+        MinHeap<HuffmanNode> forest = buildForest(frequencies);
         HuffmanNode huffmanTreeRoot = buildTree(forest);
         String[] codes = createEncodingTable(huffmanTreeRoot);
         displayCodes(codes);
